@@ -15,7 +15,6 @@ inputs:
     description: "How to tag the image. Default: latest"
   build_args:
     description: "A list of extra build args. Default: []"
-    default: []
 
 runs:
   using: "composite"
@@ -39,10 +38,19 @@ runs:
             echo "final_tag=${{inputs.tag}}" >> $GITHUB_ENV
           fi
       
+      - name: Set build_args
+        shell: bash
+        run: |
+          if [ -z "${{inputs.build_args}}" ]
+          then
+            echo "build_args=[]" >> $GITHUB_ENV
+          else
+            echo "build_args=${{inputs.build_args}}" >> $GITHUB_ENV
+          fi
       - name: Build and Push the Image
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
           tags: ${{inputs.registry_username}}/${{inputs.image_name}}:${{env.final_tag}}
-          build-args: ${{ inputs.build_args }}
+          build-args: ${{ env.build_args }}
