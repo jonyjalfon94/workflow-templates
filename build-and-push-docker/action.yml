@@ -37,20 +37,15 @@ runs:
           else
             echo "final_tag=${{inputs.tag}}" >> $GITHUB_ENV
           fi
-      
-      - name: Set build_args
-        shell: bash
+
+      - name: Print Build Args
         run: |
-          if [ -z "${{inputs.build_args}}" ]
-          then
-            echo "build_args=[]" >> $GITHUB_ENV
-          else
-            echo "build_args=${{inputs.build_args}}" >> $GITHUB_ENV
-          fi
+          echo ${{ inputs.build_args }}
+          
       - name: Build and Push the Image
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
           tags: ${{inputs.registry_username}}/${{inputs.image_name}}:${{env.final_tag}}
-          build-args: ${{ env.build_args }}
+          build-args: ${{ inputs.build_args }}
