@@ -39,9 +39,10 @@ runs:
           fi
 
       - name: Print Build Args
+        shell: bash
         run: |
           echo ${{ inputs.build_args }}
-          
+
       - name: Build and Push the Image
         uses: docker/build-push-action@v2
         with:
