@@ -62,7 +62,13 @@ runs:
           build-args: ${{ inputs.build_args }}
           target: test-results
           output: "type=local,dest=out"
-
+      
+      - name: Archive code coverage results
+        if: ${{ inputs.test == true }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: out
 
       - name: Build and Push the Image
         uses: docker/build-push-action@v2
