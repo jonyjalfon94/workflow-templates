@@ -15,6 +15,10 @@ inputs:
     description: "How to tag the image. Default: latest"
   build_args:
     description: "A list of extra build args. Default: []"
+  lint:
+    description: "If true it will lint using the lint stage of the Dockerfile. Default: false"
+  test:
+    description: "If true it will test using the lint stage of the Dockerfile. Default: false"
 
 runs:
   using: "composite"
@@ -38,10 +42,27 @@ runs:
             echo "final_tag=${{inputs.tag}}" >> $GITHUB_ENV
           fi
 
-      - name: Print Build Args
-        shell: bash
-        run: |
-          echo ${{ inputs.build_args }}
+      - name: Lint
+        if: ${{ inputs.lint == true }}
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: false
+          tags: ${{inputs.registry_username}}/${{inputs.image_name}}:${{env.final_tag}}
+          build-args: ${{ inputs.build_args }}
+          target: lint
+
+      - name: Test
+        if: ${{ inputs.test == true }}
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: false
+          tags: ${{inputs.registry_username}}/${{inputs.image_name}}:${{env.final_tag}}
+          build-args: ${{ inputs.build_args }}
+          target: test-results
+          output: "type=local,dest=out"
+
 
       - name: Build and Push the Image
         uses: docker/build-push-action@v2
@@ -50,3 +71,4 @@ runs:
           push: true
           tags: ${{inputs.registry_username}}/${{inputs.image_name}}:${{env.final_tag}}
           build-args: ${{ inputs.build_args }}
+          target: production
