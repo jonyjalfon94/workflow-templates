@@ -64,7 +64,7 @@ runs:
           outputs: "type=local,dest=out"
       
       - name: Archive code coverage results
-        if: ${{ inputs.test == true }}
+        if: ${{ inputs.test }} == true 
         uses: actions/upload-artifact@v2
         with:
           name: code-coverage-report
