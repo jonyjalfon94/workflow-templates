@@ -43,7 +43,7 @@ runs:
           fi
 
       - name: Lint
-        if: ${{ inputs.lint == true }}
+        if: ${{ inputs.lint }} == true
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -53,7 +53,7 @@ runs:
           target: lint
 
       - name: Test
-        if: true
+        if: ${{ inputs.test }} == true
         uses: docker/build-push-action@v2
         with:
           context: .
