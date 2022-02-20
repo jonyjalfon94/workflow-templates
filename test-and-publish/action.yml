@@ -51,13 +51,13 @@ runs:
           name: code-coverage-report
           path: out
 
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action/composite@v1
-        if: always()
+#       - name: Publish Unit Test Results
+#         uses: EnricoMi/publish-unit-test-result-action/composite@v1
+#         if: always()
+#         with:
+#           files: out/**/*.xml
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
         with:
-          files: out/**/*.xml
-          
-      - name: pytest-coverage-commentator
-        uses: coroo/pytest-coverage-commentator@v1.0.2
-        with:
-          pytest-coverage: out/coverage.txt
+          pytest-coverage-path: ./out/coverage.txt
+          junitxml-path: ./out/result.xml
