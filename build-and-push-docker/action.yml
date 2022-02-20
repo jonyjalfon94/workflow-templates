@@ -19,6 +19,8 @@ inputs:
     description: "If true it will lint using the lint stage of the Dockerfile. Default: false"
   test:
     description: "If true it will test using the lint stage of the Dockerfile. Default: false"
+  push:
+    description: "If true it will build the production stage of the Dockerfile. Default: false"
 
 runs:
   using: "composite"
@@ -83,6 +85,7 @@ runs:
           path: out
 
       - name: Build and Push the Image
+        if: ${{ inputs.push }} == true 
         uses: docker/build-push-action@v2
         with:
           context: .
