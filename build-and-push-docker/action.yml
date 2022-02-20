@@ -61,7 +61,7 @@ runs:
           tags: ${{inputs.registry_username}}/${{inputs.image_name}}:${{env.final_tag}}
           build-args: ${{ inputs.build_args }}
           target: test-results
-          output: "type=local,dest=out"
+          outputs: "type=local,dest=out"
       
       - name: Archive code coverage results
         if: ${{ inputs.test == true }}
