@@ -27,7 +27,7 @@ runs:
         with:
           context: .
           push: false
-          tags: ${{inputs.registry_username}}/${{inputs.image_name}}:test
+          tags: ${{inputs.image_name}}:test
           build-args: ${{ inputs.build_args }}
           target: lint
           cache-from: type=local,src=/tmp/.buildx-cache
@@ -38,7 +38,7 @@ runs:
         with:
           context: .
           push: false
-          tags: ${{inputs.registry_username}}/${{inputs.image_name}}:test
+          tags: ${{inputs.image_name}}:test
           build-args: ${{ inputs.build_args }}
           target: test-results
           outputs: "type=local,dest=out"
