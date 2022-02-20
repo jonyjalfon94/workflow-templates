@@ -56,3 +56,8 @@ runs:
         if: always()
         with:
           files: out/**/*.xml
+          
+      - name: pytest-coverage-commentator
+        uses: coroo/pytest-coverage-commentator@v1.0.2
+        with:
+          pytest-coverage: out/coverage.txt
