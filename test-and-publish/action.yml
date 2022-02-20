@@ -30,8 +30,10 @@ runs:
           tags: ${{inputs.image_name}}:test
           build-args: ${{ inputs.build_args }}
           target: lint
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+          cache-from: |
+            type=gha,scope=lint
+          cache-to: |
+            type=gha,scope=lint,mode=max
 
       - name: Test
         uses: docker/build-push-action@v2
@@ -42,8 +44,11 @@ runs:
           build-args: ${{ inputs.build_args }}
           target: test-results
           outputs: "type=local,dest=out"
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+          cache-from: |
+            type=gha,scope=test
+            type=gha,scope=lint
+          cache-to: |
+            type=gha,scope=test,mode=max
       
       - name: Archive code coverage results
         uses: actions/upload-artifact@v2
