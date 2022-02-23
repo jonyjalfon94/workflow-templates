@@ -1,0 +1,18 @@
+# Define Metadata
+name: "Publish Test Results"
+description: "Publishes tests results and if it's triggered by PR it creates a comment"
+
+# Define this workflow as a composite action
+runs:
+  using: "composite"
+  steps:
+  
+    - name: Download Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        path: code-coverage-report
+
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      with:
+        files: code-coverage-report/**/*.xml
