@@ -26,7 +26,7 @@ runs:
     uses: actions/cache@v2
     with:
       path: ~/.local
-      key: poetry-${{ inputs.poetry_version }}
+      key: poetry-v1-${{ inputs.poetry_version }}
   
   - name: Install poetry
     uses: snok/install-poetry@v1.2.0
@@ -39,7 +39,7 @@ runs:
     id: cached-poetry-dependencies
     uses: actions/cache@v2
     with:
-      path: ${{ github.repository }}/.venv
+      path: v1-${{ github.repository }}/.venv
       key: ${{ github.repository }}/venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
       
   - name: Install dependencies
