@@ -88,10 +88,10 @@ runs:
         run: |
           if [ ${{ steps.branch-name.outputs.current_branch }} == 'main' ]; then
             echo "Currently on main branch"
-            echo "::set-output name=publish::true"
+            echo "::set-env name=publish::true"
           else
             echo "Currently Not in main branch"
-            echo "::set-output name=publish::false"
+            echo "::set-env name=publish::false"
           fi
         shell: bash
 
