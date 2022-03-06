@@ -21,12 +21,10 @@ runs:
 
   - name: Run Tests
     working-directory: ${{ github.repository }}
-    env:
-      TESTS_PATH: ${{ inputs.tests_path }}
     shell: bash
     run: |
-      poetry run pytest "${TESTS_PATH}" --junitxml=./results/tests/result.xml
-      poetry run coverage run --rcfile ./pyproject.toml -m pytest "${TESTS_PATH}"
+      poetry run pytest "${{ inputs.tests_path }}" --junitxml=./results/tests/result.xml
+      poetry run coverage run --rcfile ./pyproject.toml -m pytest "${{ inputs.tests_path }}"
       poetry run coverage report -m > ./results/coverage/coverage.txt
       poetry run coverage html -d ./results/coverage/html
 

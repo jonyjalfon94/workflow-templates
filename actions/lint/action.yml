@@ -1,6 +1,11 @@
 name: "Lint"
 description: "Lint Step"
 
+inputs:
+  lint_path:
+    required: true
+    description: "Paths to Lint"
+
 runs:
   using: "composite"
   steps:
@@ -9,4 +14,4 @@ runs:
     working-directory: ${{ github.repository }}
     shell: bash
     run: |
-      poetry run black --config ./pyproject.toml --check app tests
+      poetry run black --config ./pyproject.toml --check ${{ inputs.lint_path }}
