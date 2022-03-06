@@ -1,6 +1,11 @@
 name: "Test"
 description: "Test Step"
 
+inputs:
+  test_path:
+    required: true
+    description: "The paths that will be tested"
+
 runs:
   using: "composite"
   steps:
@@ -19,7 +24,7 @@ runs:
     shell: bash
     run: |
       poetry run pytest ./src --junitxml=./results/tests/result.xml
-      poetry run coverage run --rcfile ./pyproject.toml -m pytest ./src
+      poetry run coverage run --rcfile ./pyproject.toml -m pytest ${{ inputs.tests_path }}
       poetry run coverage report -m > ./results/coverage/coverage.txt
       poetry run coverage html -d ./results/coverage/html
 
