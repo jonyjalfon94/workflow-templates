@@ -84,14 +84,14 @@ runs:
             type=gha,scope=${{inputs.image_name}},mode=max
 
       - name: Set Publish
-        id: check
+        id: check-publish
         run: |
           if [ ${{ steps.branch-name.outputs.current_branch }} == 'main' ]; then
             echo "Currently on main branch"
-            echo "::set-env name=publish::true"
+            echo "::set-output name=publish::true"
           else
             echo "Currently Not in main branch"
-            echo "::set-env name=publish::false"
+            echo "::set-output name=publish::false"
           fi
         shell: bash
 
@@ -99,5 +99,5 @@ runs:
         env:
           GITHUB_TOKEN: ${{ inputs.github_token }}
         with:
-          publish: ${{ env.publish }}
+          publish: ${{ steps.check-publish.outputs.publish }}
           version: ${{ steps.versioning.outputs.version }}
