@@ -63,6 +63,7 @@ runs:
           branch: main
           major_pattern: "BREAKING CHANGE:"
           minor_pattern: "feat:"
+          bump_each_commit: true
 
       - name: Generate Docker Metadata
         id: metadata
