@@ -50,11 +50,11 @@ runs:
         uses: docker/setup-buildx-action@v1
 
       - name: Semantic versioning
+        if: ${{ steps.branch-name.outputs.current_branch }} == 'main'
         id: versioning
         uses: PaulHatch/semantic-version@v4.0.2
         with:
           tag_prefix: ''
-          branch: main
           major_pattern: "BREAKING CHANGE:"
           minor_pattern: "feat:"
 
@@ -101,4 +101,3 @@ runs:
           GITHUB_TOKEN: ${{ inputs.github_token }}
         with:
           publish: ${{ steps.check-publish.outputs.publish }}
-          version: ${{ steps.versioning.outputs.version }}
