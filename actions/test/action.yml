@@ -25,7 +25,7 @@ runs:
       TESTS_PATH: ${{ inputs.tests_path }}
     shell: bash
     run: |
-      poetry run pytest ./src --junitxml=./results/tests/result.xml
+      poetry run pytest $TESTS_PATH --junitxml=./results/tests/result.xml
       poetry run coverage run --rcfile ./pyproject.toml -m pytest $TESTS_PATH
       poetry run coverage report -m > ./results/coverage/coverage.txt
       poetry run coverage html -d ./results/coverage/html
