@@ -1,0 +1,44 @@
+name: "Test"
+description: "Test Step"
+
+runs:
+  using: "composite"
+  steps:
+
+  - name: Create results directory
+    working-directory: ${{ github.repository }}
+    shell: bash
+    run: |-
+      mkdir results
+      mkdir results/tests
+      mkdir results/coverage
+      mkdir results/coverage/html
+
+  - name: Run Tests
+    working-directory: ${{ github.repository }}
+    shell: bash
+    run: |
+      poetry run pytest ./src --junitxml=./results/tests/result.xml
+      poetry run coverage run --rcfile ./pyproject.toml -m pytest ./src
+      poetry run coverage report -m > ./results/coverage/coverage.txt
+      poetry run coverage html -d ./results/coverage/html
+
+  - name: Publish Unit Test Results
+    uses: EnricoMi/publish-unit-test-result-action@v1
+    with:
+      files: ${{ github.repository }}/results/tests/**/*.xml
+      fail_on: "test failures"
+
+  # Compress Coverage html to optimize upload times
+  - name: Compress Coverage html
+    working-directory: ${{ github.repository }}
+    shell: bash
+    run: |
+      zip -r ./results/coverage/coverage_html.zip ./results/coverage/html
+      rm -rf ./results/coverage/html
+
+  - name: Archive code coverage results
+    uses: actions/upload-artifact@v2
+    with:
+      name: code-coverage-report
+      path: ${{ github.repository }}/results

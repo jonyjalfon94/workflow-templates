@@ -16,3 +16,6 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       with:
         files: code-coverage-report/**/*.xml
+        fail_on: "test failures"
+        
+

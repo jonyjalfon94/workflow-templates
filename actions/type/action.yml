@@ -1,0 +1,12 @@
+name: "Type"
+description: "Type Step"
+
+runs:
+  using: "composite"
+  steps:
+
+  - name: Type
+    working-directory: ${{ github.repository }}
+    shell: bash
+    run: |
+      make type

@@ -2,11 +2,11 @@ name: "Build and Push Docker"
 description: "Build a container image and Pushes it to Docker registry"
 
 inputs:
-  registry_username:
-    description: "Username for image registry"
+  docker_username:
+    description: "Username for Docker registry"
     required: true
-  registry_password:
-    description: "Password for image registry"
+  docker_password:
+    description: "Password for Docker registry"
     required: true
   image_name:
     description: "Name of the image to push"
@@ -21,17 +21,21 @@ inputs:
 runs:
   using: "composite"
   steps:
+
       - uses: actions/checkout@v2
-      
-      - name: Setup BuildX
-        uses: docker/setup-buildx-action@v1
-            
+        with:
+          path: ${{ github.repository }}
+
+
       - name: Login to the Registry
         uses: docker/login-action@v1
         with:
-          username: ${{inputs.registry_username}}
-          password: ${{inputs.registry_password}}
+          username: ${{inputs.docker_username}}
+          password: ${{inputs.docker_password}}
       
+      - name: Setup BuildX
+        uses: docker/setup-buildx-action@v1
+
       - name: Set the tag
         shell: bash
         run: |
@@ -42,14 +46,26 @@ runs:
             echo "final_tag=${{inputs.tag}}" >> $GITHUB_ENV
           fi
 
+      - name: Generate Docker Metadata
+        id: metadata
+        uses: docker/metadata-action@v3
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ${{ inputs.docker_username }}/${{ inputs.image_name }}
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            ${{ github.sha }}
+            latest
+
       - name: Build and Push the Image
         uses: docker/build-push-action@v2
         with:
-          context: .
-          push: true
-          tags: ${{inputs.registry_username}}/${{inputs.image_name}}:${{env.final_tag}}
+          context: ${{ github.repository }}
+          push: false
+          tags: ${{ steps.metadata.outputs.tags }}
           build-args: ${{ inputs.build_args }}
-          target: production
+          target: release
           cache-from: |
             type=gha,scope=prod
           cache-to: |

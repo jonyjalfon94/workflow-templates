@@ -1,0 +1,12 @@
+name: "Lint"
+description: "Lint Step"
+
+runs:
+  using: "composite"
+  steps:
+
+  - name: Code Formatting
+    working-directory: ${{ github.repository }}
+    shell: bash
+    run: |
+      poetry run black --config ./pyproject.toml --check app tests
