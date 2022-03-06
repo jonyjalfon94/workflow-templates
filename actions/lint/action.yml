@@ -14,4 +14,4 @@ runs:
     working-directory: ${{ github.repository }}
     shell: bash
     run: |
-      poetry run black --config ./pyproject.toml --check ${{ inputs.lint_path }}
+      poetry run black --config ./pyproject.toml --check "${{ inputs.lint_path }}"
