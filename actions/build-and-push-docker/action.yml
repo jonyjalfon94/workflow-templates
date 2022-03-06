@@ -83,9 +83,21 @@ runs:
           cache-to: |
             type=gha,scope=${{inputs.image_name}},mode=max
 
+      - name: Set Publish
+        id: check
+        run: |
+          if [ ${{ steps.branch-name.outputs.current_branch }} == 'main' ]; then
+            echo "Currently on main branch"
+            echo "::set-output name=publish::true"
+          else
+            echo "Currently Not in main branch"
+            echo "::set-output name=publish::false"
+          fi
+        shell: bash
+
       - uses: release-drafter/release-drafter@v5
         env:
           GITHUB_TOKEN: ${{ inputs.github_token }}
         with:
-          publish: ${{ steps.branch-name.outputs.current_branch == "main"}}
+          publish: ${{ env.publish }}
           version: ${{ steps.versioning.outputs.version }}
