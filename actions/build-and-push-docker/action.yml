@@ -59,6 +59,7 @@ runs:
         id: versioning
         uses: PaulHatch/semantic-version@v4.0.2
         with:
+          tag_prefix: ''
           branch: main
           major_pattern: "BREAKING CHANGE:"
           minor_pattern: "feat:"
