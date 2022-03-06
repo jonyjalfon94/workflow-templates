@@ -63,7 +63,6 @@ runs:
           branch: main
           major_pattern: "BREAKING CHANGE:"
           minor_pattern: "feat:"
-          bump_each_commit: true
 
       - name: Generate Docker Metadata
         id: metadata
@@ -95,5 +94,5 @@ runs:
         env:
           GITHUB_TOKEN: ${{ inputs.github_token }}
         with:
-          publish: true
+          publish: ${{ github.ref == 'ref/head/main' }}
           version: ${{ steps.versioning.outputs.version }}
