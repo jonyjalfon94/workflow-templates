@@ -59,6 +59,7 @@ runs:
       - name: Semantic versioning
         id: versioning
         uses: PaulHatch/semantic-version@v4.0.2
+        working-directory: ${{ github.repository }}
         with:
           branch: main
           tag_prefix: "v"
