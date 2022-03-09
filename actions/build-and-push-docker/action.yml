@@ -98,4 +98,4 @@ runs:
         env:
           GITHUB_TOKEN: ${{ inputs.github_token }}
         with:
-          publish: ${{ steps.check-publish.outputs.publish }}
+          publish: false
