@@ -52,7 +52,7 @@ runs:
       - uses: release-drafter/release-drafter@v5
         id: versioning
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ inputs.github_token }}
         with:
           publish: false
 
