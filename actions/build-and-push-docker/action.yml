@@ -54,8 +54,7 @@ runs:
         env:
           GITHUB_TOKEN: ${{ inputs.github_token }}
         with:
-          publish: false
-
+          disable-releaser: ${{ github.ref_name != github.event.repository.default_branch }}
 
       - name: Generate Docker Metadata
         id: metadata
@@ -99,4 +98,4 @@ runs:
         env:
           GITHUB_TOKEN: ${{ inputs.github_token }}
         with:
-          publish: ${{ steps.check-publish.outputs.publish }}
+          publish: ${{ github.ref_name != github.event.repository.default_branch }}
