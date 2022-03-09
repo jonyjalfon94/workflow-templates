@@ -49,14 +49,13 @@ runs:
       - name: Setup BuildX
         uses: docker/setup-buildx-action@v1
 
-      - name: Semantic versioning
-        if: steps.branch-name.outputs.current_branch == 'main'
+      - uses: release-drafter/release-drafter@v5
         id: versioning
-        uses: PaulHatch/semantic-version@v4.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
-          tag_prefix: ''
-          major_pattern: "BREAKING CHANGE:"
-          minor_pattern: "feat:"
+          publish: false
+
 
       - name: Generate Docker Metadata
         id: metadata
@@ -67,7 +66,7 @@ runs:
             ${{ inputs.docker_username }}/${{ inputs.image_name }}
           # generate Docker tags based on the following events/attributes
           tags: |
-            ${{ steps.versioning.outputs.version }}
+            ${{ steps.versioning.outputs.tag_name }}
             ${{ github.sha }}
             latest
 
