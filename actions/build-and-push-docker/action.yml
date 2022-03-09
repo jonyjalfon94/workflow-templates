@@ -101,14 +101,14 @@ runs:
           publish: ${{ steps.check-publish.outputs.publish }}
 
       - name: Update Changelog
-        if: ${{ steps.check-publish.outputs.publish == true }}
+        if: ${{ steps.check-publish.outputs.publish == 'true' }}
         uses: stefanzweifel/changelog-updater-action@v1
         with:
           latest-version: ${{ steps.versioning.outputs.tag_name }}
           release-notes: ${{ steps.versioning.outputs.body }}
 
       - name: Commit updated CHANGELOG
-        if: ${{ steps.check-publish.outputs.publish == true }}
+        if: ${{ steps.check-publish.outputs.publish == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: main
