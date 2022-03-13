@@ -20,6 +20,9 @@ inputs:
   target: 
     required: true
     description: "Target image in multistage build"
+  tag: 
+    required: false
+    description: "Tag to add to Docker Image"
 
 runs:
   using: "composite"
@@ -48,7 +51,7 @@ runs:
             ${{ inputs.docker_username }}/${{ inputs.image_name }}
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=semver,pattern={{version}}
+            ${{ inputs.tag }}
             ${{ github.sha }}
             latest
 
