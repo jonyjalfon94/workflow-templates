@@ -62,9 +62,9 @@ runs:
         shell: bash
         id: set-context
         run: |
-          if [ ! -z ${{ inputs.context }} ]; then
+          if [ ! -z ${{inputs.context}} ]; then
             echo "Using provided Context"
-            echo "::set-output name=context::${{ inputs.context }}"
+            echo "::set-output name=context::${{inputs.context}}"
           else
             echo "Context not provided, using current directory"
             echo "::set-output name=context::'.'"
