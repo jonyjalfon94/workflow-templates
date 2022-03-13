@@ -48,6 +48,7 @@ runs:
             ${{ inputs.docker_username }}/${{ inputs.image_name }}
           # generate Docker tags based on the following events/attributes
           tags: |
+            type=semver,pattern={{version}}
             ${{ github.sha }}
             latest
 
