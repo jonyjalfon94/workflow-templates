@@ -23,6 +23,9 @@ inputs:
   tag: 
     required: false
     description: "Tag to add to Docker Image"
+  context:
+    required: false
+    description: "Context for the Docker build"
 
 runs:
   using: "composite"
@@ -55,10 +58,22 @@ runs:
             ${{ github.sha }}
             latest
 
+      - name: Set Context
+        shell: bash
+        id: set-context
+        run: |
+          if [ ! -z ${{ inputs.context }} ]; then
+            echo "Using provided Context"
+            echo "::set-output name=context::${{ inputs.context }}"
+          else
+            echo "Context not provided, using current directory"
+            echo "::set-output name=context::'.'"
+          fi
+
       - name: Build and Push the Image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ${{ steps.set-context.outputs.context }}
           push: ${{ inputs.push }}
           tags: ${{ steps.metadata.outputs.tags }}
           build-args: ${{ inputs.build_args }}
