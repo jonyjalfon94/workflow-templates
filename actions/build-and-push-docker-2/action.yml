@@ -67,7 +67,7 @@ runs:
             echo "::set-output name=context::${{inputs.context}}"
           else
             echo "Context not provided, using current directory"
-            echo "::set-output name=context::'.'"
+            echo "::set-output name=context::./"
           fi
 
       - name: Build and Push the Image
