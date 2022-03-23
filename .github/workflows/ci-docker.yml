@@ -4,13 +4,11 @@ name: CI
 # Configure Triggers
 on:
   workflow_call:
-    inputs:
+    secrets:
       TOKEN:
         required: true
-        type: string
       DOCKERHUB_PASSWORD:
         required: true
-        type: string
 env:
   SERVICE_NAME: python-demo-2
   PYTHON_VERSION: "3.9.6"
